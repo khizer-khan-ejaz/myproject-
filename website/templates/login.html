@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Healthcare Portal - Login</title>
+
+    <!-- Meta tags -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- CSS Stylesheets -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}" />
+
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans|Raleway|Candal" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
+    <style>
+      /* Additional styling for the login page */
+      body {
+        font-family: 'Open Sans', sans-serif;
+        background-color: #f8f9fa;
+      }
+      
+      .banner .bg-color {
+        min-height: 100vh;
+        background-color: rgba(0, 0, 0, 0.02);
+        padding-top: 80px;
+        padding-bottom: 50px;
+      }
+      
+      .forms-container {
+        max-width: 900px;
+        margin: 2rem auto;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+      
+      .form-tabs {
+        display: flex;
+        background-color: #f1f1f1;
+      }
+      
+      .form-tab {
+        flex: 1;
+        text-align: center;
+        padding: 15px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      
+      .form-tab.active {
+        background-color: #3fbbc0;
+        color: white;
+      }
+      
+      .form-content {
+        padding: 30px;
+      }
+      
+      .form-row {
+        margin-bottom: 20px;
+        position: relative;
+      }
+      
+      .form-row label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #555;
+      }
+      
+      .form-row .icon {
+        position: absolute;
+        left: 12px;
+        top: 40px;
+        color: #3fbbc0;
+      }
+      
+      .form-control {
+        width: 100%;
+        padding: 10px 15px 10px 40px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        transition: border-color 0.3s;
+      }
+      
+      .form-control:focus {
+        border-color: #3fbbc0;
+        box-shadow: 0 0 0 0.2rem rgba(63, 187, 192, 0.25);
+        outline: none;
+      }
+      
+      .form-select {
+        width: 100%;
+        padding: 10px 15px 10px 40px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+      }
+      
+      .btn-submit {
+        width: 100%;
+        padding: 12px;
+        background-color: #3fbbc0;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      
+      .btn-submit:hover {
+        background-color: #34a0a4;
+      }
+      
+      .form-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      
+      .form-check {
+        display: flex;
+        align-items: center;
+      }
+      
+      .form-check input {
+        margin-right: 8px;
+      }
+      
+      .forgot-link {
+        color: #3fbbc0;
+        text-decoration: none;
+      }
+      
+      .forgot-link:hover {
+        text-decoration: underline;
+      }
+      
+      /* Hide inactive forms */
+      .form-panel {
+        display: none;
+      }
+      
+      .form-panel.active {
+        display: block;
+      }
+      
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .forms-container {
+          margin: 1rem;
+        }
+        
+        .form-content {
+          padding: 20px;
+        }
+      }
+      
+      /* Footer styling */
+      #footer {
+        background-color: #333;
+        color: white;
+        padding: 40px 0 20px;
+      }
+      
+      .ftr-tle {
+        margin-bottom: 15px;
+      }
+      
+      .info-sec {
+        color: #999;
+      }
+      
+      .quick-info li {
+        padding: 3px 0;
+      }
+      
+      .quick-info li a {
+        color: #999;
+        text-decoration: none;
+      }
+      
+      .quick-info li a:hover {
+        color: #3fbbc0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <section id="banner" class="banner">
+      <div class="bg-color">
+        <!-- Navigation Bar -->
+        <nav class="navbar navbar-default navbar-fixed-top">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="#">
+                <img src="{{ url_for('static', filename='image/logo.png') }}" class="img-responsive" style="width: 140px; margin-top: -16px" alt="Logo" />
+              </a>
+            </div>
+            <div class="collapse navbar-collapse navbar-right" id="myNavbar">
+              <ul class="nav navbar-nav">
+                <li><a href="{{ url_for('views.index') }}">Home</a></li>
+                <li><a href="{{ url_for('views.index') }}#services">Services</a></li>
+                <li><a href="{{ url_for('views.index') }}#doctors">Doctors</a></li>
+                <li><a href="{{ url_for('views.index') }}#testimonial">Testimonial</a></li>
+                <li class="active"><a href="#">Login</a></li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+
+        <!-- Forms Section -->
+        <div class="container">
+          <div class="forms-container">
+            <!-- Form Tabs -->
+            <div class="form-tabs">
+              <div class="form-tab active" id="login-tab">
+                <i class="fas fa-sign-in-alt"></i> Login
+              </div>
+              <div class="form-tab" id="register-tab">
+                <i class="fas fa-user-plus"></i> Register
+              </div>
+            </div>
+
+            <!-- Form Content -->
+            <div class="form-content">
+              <!-- Login Form -->
+              <div class="form-panel active" id="login-panel">
+                <h3 class="text-center mb-4">Welcome Back!</h3>
+                <form method="POST" action="{{ url_for('views.login') }}">
+                  <div class="form-row">
+                    <label for="username2">Username</label>
+                    <i class="fas fa-user icon"></i>
+                    <input type="text" id="username2" name="username2" class="form-control" required />
+                  </div>
+                  
+                  <div class="form-row">
+                    <label for="password2">Password</label>
+                    <i class="fas fa-lock icon"></i>
+                    <input type="password" id="password2" name="password2" class="form-control" required />
+                  </div>
+                  
+                  <div class="form-row">
+                    <label for="userType">User Type</label>
+                    <i class="fas fa-user-tag icon"></i>
+                    <select id="userType" name="userType" class="form-select" required>
+                      <option value="">Select user type</option>
+                      <option value="patient">Patient</option>
+                      <option value="doctor">Doctor</option>
+                      <option value="admin">Admin</option>
+                    </select>
+                  </div>
+                  
+                  <div class="form-footer">
+                    <div class="form-check">
+                      <input type="checkbox" id="remember_me" name="remember_me" value="true" />
+                      <label for="remember_me">Remember me</label>
+                    </div>
+                    <a href="#" class="forgot-link">Forgot password?</a>
+                  </div>
+                  
+                  <div class="form-row">
+                    <button type="submit" name="submit_sign_in" class="btn-submit">
+                      Login <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              <!-- Register Form -->
+              <div class="form-panel" id="register-panel">
+                <h3 class="text-center mb-4">Create New Account</h3>
+                <form method="POST" action="{{ url_for('views.login') }}">
+                  <div class="form-row">
+                    <label for="username1">Username</label>
+                    <i class="fas fa-user icon"></i>
+                    <input type="text" id="username1" name="username1" class="form-control" required />
+                  </div>
+                  
+                  <div class="form-row">
+                    <label for="ssn">Social Security Number</label>
+                    <i class="fas fa-id-card icon"></i>
+                    <input type="text" id="ssn" name="ssn" class="form-control" required />
+                  </div>
+                  
+                  <div class="form-row">
+                    <label for="fullname">Full Name</label>
+                    <i class="fas fa-user-circle icon"></i>
+                    <input type="text" id="fullname" name="fullname" class="form-control" required />
+                  </div>
+                  
+                  <div class="form-row">
+                    <label for="email">Email Address</label>
+                    <i class="fas fa-envelope icon"></i>
+                    <input type="email" id="email" name="email" class="form-control" required />
+                  </div>
+                  
+                  <div class="form-row">
+                    <label for="password1">Password</label>
+                    <i class="fas fa-lock icon"></i>
+                    <input type="password" id="password1" name="password1" class="form-control" required />
+                  </div>
+                  
+                  <div class="form-row">
+                    <label for="birthdate">Date of Birth</label>
+                    <i class="fas fa-calendar icon"></i>
+                    <input type="date" id="birthdate" name="birthdate" class="form-control" required />
+                  </div>
+                  
+                  <div class="form-row">
+                    <button type="submit" class="btn-submit">
+                      Create Account <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 col-sm-6">
+            <div class="ftr-tle">
+              <h4 class="white no-padding">About Us</h4>
+            </div>
+            <div class="info-sec">
+              <p>Innovative Healthcare aiming to take patient's care to a new level.</p>
+            </div>
+          </div>
+          
+          <div class="col-md-4 col-sm-6">
+            <div class="ftr-tle">
+              <h4 class="white no-padding">Quick Links</h4>
+            </div>
+            <div class="info-sec">
+              <ul class="quick-info">
+                <li><a href="{{ url_for('views.index') }}"><i class="fa fa-circle"></i> Home</a></li>
+                <li><a href="{{ url_for('views.index') }}#service"><i class="fa fa-circle"></i> Services</a></li>
+                <li><a href="{{ url_for('views.index') }}#appointment"><i class="fa fa-circle"></i> Appointment</a></li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="col-md-4 col-sm-6">
+            <div class="ftr-tle">
+              <h4 class="white no-padding">Contact Us</h4>
+            </div>
+            <div class="info-sec">
+              <p><i class="fas fa-map-marker-alt"></i> 123 Healthcare Ave, Medical City</p>
+              <p><i class="fas fa-phone"></i> (123) 456-7890</p>
+              <p><i class="fas fa-envelope"></i> info@healthcare.com</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.easing.min.js') }}"></script>
+    
+    <script>
+      // Tab switching functionality
+      document.addEventListener('DOMContentLoaded', function() {
+        const loginTab = document.getElementById('login-tab');
+        const registerTab = document.getElementById('register-tab');
+        const loginPanel = document.getElementById('login-panel');
+        const registerPanel = document.getElementById('register-panel');
+        
+        loginTab.addEventListener('click', function() {
+          loginTab.classList.add('active');
+          registerTab.classList.remove('active');
+          loginPanel.classList.add('active');
+          registerPanel.classList.remove('active');
+        });
+        
+        registerTab.addEventListener('click', function() {
+          registerTab.classList.add('active');
+          loginTab.classList.remove('active');
+          registerPanel.classList.add('active');
+          loginPanel.classList.remove('active');
+        });
+      });
+    </script>
+  </body>
+</html>

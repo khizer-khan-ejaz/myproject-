@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SHC Hospital - Doctor Dashboard Pro</title>
+    <meta name="description" content="Enhanced Doctor Dashboard for SHC Hospital" />
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.0/css/bootstrap.min.css" rel="stylesheet"> <!-- Updated Bootstrap -->
+
+    <style>
+        :root {
+            --primary: #4a90e2; /* Slightly softer blue */
+            --primary-dark: #357abd;
+            --primary-light: #eaf2fa;
+            --secondary: #50e3c2; /* Teal */
+            --secondary-dark: #38a892;
+            --dark: #263238; /* Darker gray-blue */
+            --light: #f8f9fa;
+            --danger: #e74c3c;
+            --warning: #f5a623; /* Brighter orange */
+            --success: #27ae60;
+            --info: #5bc0de; /* Info blue */
+            --white: #ffffff;
+            --gray-100: #f8f9fa;
+            --gray-200: #e9ecef;
+            --gray-300: #dee2e6;
+            --gray-400: #ced4da;
+            --gray-500: #adb5bd;
+            --gray-600: #6c757d;
+            --gray-700: #495057;
+            --gray-800: #343a40;
+            --gray-900: #212529;
+            --body-bg: #f4f7f6; /* Subtle off-white/greenish tint */
+            --card-shadow: 0 4px 8px rgba(0, 0, 0, 0.03), 0 6px 20px rgba(0, 0, 0, 0.05);
+            --card-hover-shadow: 0 6px 12px rgba(0, 0, 0, 0.05), 0 8px 24px rgba(0, 0, 0, 0.08);
+            --font-family-sans-serif: 'Poppins', sans-serif;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+             scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-family-sans-serif);
+            background-color: var(--body-bg);
+            color: var(--dark);
+            padding-top: 90px; /* Increased padding for taller navbar */
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+            padding-top: 0.8rem;
+            padding-bottom: 0.8rem;
+        }
+
+        .navbar-brand img {
+            height: 45px; /* Slightly larger logo */
+        }
+
+        .navbar .nav-link {
+            color: var(--gray-700);
+            font-weight: 500;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative; /* For potential underline effect */
+        }
+        .navbar .nav-link i {
+            margin-right: 8px;
+            opacity: 0.8;
+        }
+
+        .navbar .nav-link:hover,
+        .navbar .nav-link.active {
+            color: var(--primary);
+            background-color: var(--primary-light);
+        }
+        /* Optional: Underline effect on hover/active */
+        /* .navbar .nav-link::after { content: ''; position: absolute; bottom: 5px; left: 1.2rem; right: 1.2rem; height: 2px; background-color: var(--primary); opacity: 0; transform: scaleX(0); transition: all 0.3s ease; } */
+        /* .navbar .nav-link:hover::after, .navbar .nav-link.active::after { opacity: 1; transform: scaleX(1); } */
+
+
+        .doctor-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 3rem 2.5rem;
+            border-radius: 16px;
+            margin-bottom: 3rem;
+            box-shadow: 0 10px 30px rgba(74, 144, 226, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        /* Optional: Subtle background pattern */
+        .doctor-header::before {
+            content: "\f0f1"; /* FontAwesome stethoscope */
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            right: -20px;
+            bottom: -30px;
+            font-size: 150px;
+            color: rgba(255, 255, 255, 0.1);
+            transform: rotate(-15deg);
+            z-index: 0;
+        }
+        .doctor-header h1 {
+            margin: 0;
+            font-weight: 700; /* Bolder */
+            font-size: 2.4rem;
+            position: relative; z-index: 1;
+        }
+
+        .doctor-header p {
+            margin: 0.5rem 0 0 0;
+            opacity: 0.9;
+            font-size: 1.1rem;
+            font-weight: 300;
+            position: relative; z-index: 1;
+        }
+        .doctor-header .btn-light {
+             background-color: rgba(255,255,255, 0.9);
+             color: var(--primary-dark);
+             font-weight: 600;
+             padding: 0.8rem 1.5rem;
+             border-radius: 8px;
+             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+             transition: all 0.3s ease;
+             position: relative; z-index: 1;
+        }
+         .doctor-header .btn-light:hover {
+              background-color: var(--white);
+              transform: translateY(-2px);
+              box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+         }
+
+
+        .card {
+            border: none;
+            border-radius: 16px; /* More rounded */
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 2rem; /* More spacing */
+            background-color: var(--white);
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--card-hover-shadow);
+        }
+
+        .card-header {
+            background: linear-gradient(to right, var(--white), var(--gray-100));
+            border-bottom: 1px solid var(--gray-200);
+            padding: 1.5rem 1.75rem;
+            font-weight: 600;
+            font-size: 1.25rem; /* Larger header text */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--dark);
+        }
+         .card-header span i {
+            color: var(--primary);
+            margin-right: 10px;
+            font-size: 1.2em; /* Slightly larger icon */
+        }
+
+        .card-body {
+            padding: 1.75rem;
+        }
+
+        .btn {
+            border-radius: 8px; /* Consistent rounding */
+            padding: 0.7rem 1.4rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            letter-spacing: 0.5px;
+        }
+         .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+         }
+
+        .btn-primary { background-color: var(--primary); border-color: var(--primary); }
+        .btn-primary:hover { background-color: var(--primary-dark); border-color: var(--primary-dark); }
+        .btn-success { background-color: var(--success); border-color: var(--success); }
+        .btn-success:hover { background-color: #1e8449; border-color: #1e8449; }
+        .btn-outline-primary { color: var(--primary); border-color: var(--primary); }
+        .btn-outline-primary:hover { background-color: var(--primary); color: var(--white); }
+        .btn-outline-info { color: var(--info); border-color: var(--info); }
+        .btn-outline-info:hover { background-color: var(--info); color: var(--white); }
+        .btn-outline-secondary { color: var(--gray-600); border-color: var(--gray-400); }
+        .btn-outline-secondary:hover { background-color: var(--gray-600); color: var(--white); border-color: var(--gray-600); }
+
+        .table { margin-bottom: 0; border-collapse: separate; border-spacing: 0; /* Needed for border-radius on cells */ }
+        .table thead th {
+            font-weight: 600;
+            color: var(--gray-700);
+            border-top: none;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            background-color: var(--gray-100);
+            border-bottom: 2px solid var(--gray-300);
+            padding: 1rem 1.25rem;
+            white-space: nowrap;
+        }
+         .table thead th:first-child { border-top-left-radius: 8px; }
+         .table thead th:last-child { border-top-right-radius: 8px; }
+
+        .table td {
+            vertical-align: middle;
+            font-size: 0.95rem;
+            border-top: 1px solid var(--gray-200);
+            padding: 1rem 1.25rem;
+            color: var(--gray-800);
+        }
+        .table-hover > tbody > tr:hover {
+            background-color: var(--primary-light);
+            color: var(--dark);
+            cursor: pointer;
+        }
+
+        .badge { padding: 0.6em 1em; font-weight: 500; font-size: 0.8rem; border-radius: 20px; /* Pill shape */ letter-spacing: 0.5px; }
+        .badge.bg-success { background-color: #e8f5e9 !important; color: #2e7d32 !important; border: 1px solid #a5d6a7; }
+        .badge.bg-warning { background-color: #fff8e1 !important; color: #ff8f00 !important; border: 1px solid #ffe082; }
+        .badge.bg-primary { background-color: var(--primary-light) !important; color: var(--primary-dark) !important; border: 1px solid #a9cffa; }
+        .badge.bg-info { background-color: #e1f5fe !important; color: #0277bd !important; border: 1px solid #81d4fa; }
+        .badge-scan { background-color: rgba(80, 227, 194, 0.15); color: var(--secondary-dark); border: 1px solid rgba(80, 227, 194, 0.4); }
+
+        .form-control, .form-select {
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            border: 1px solid var(--gray-300);
+            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            background-color: var(--white);
+            font-size: 0.95rem;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.25rem rgba(74, 144, 226, 0.2);
+            background-color: var(--white); /* Ensure bg stays white on focus */
+        }
+        .input-group-text {
+            background-color: var(--gray-100);
+            border: 1px solid var(--gray-300);
+            border-right: none; /* Blend with input */
+            border-radius: 8px 0 0 8px;
+            padding: 0.8rem 1rem;
+            color: var(--gray-600);
+        }
+        .form-label { font-weight: 500; margin-bottom: 0.5rem; color: var(--gray-700); }
+
+        /* Calendar Enhancements */
+        .calendar-container { background-color: var(--white); border-radius: 0 0 16px 16px; overflow: hidden; border: 1px solid var(--gray-200); border-top: none; }
+        .calendar-header {
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            color: white; padding: 1.25rem 1.75rem; display: flex; justify-content: space-between; align-items: center;
+        }
+        .calendar-header h3 { margin: 0; font-size: 1.3rem; font-weight: 600; }
+        .calendar-nav button { background: rgba(255,255,255,0.15); border: none; color: white; font-size: 1.1rem; cursor: pointer; width: 38px; height: 38px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; transition: background 0.3s ease; }
+        .calendar-nav button:hover { background: rgba(255,255,255,0.3); }
+        .calendar-days { display: grid; grid-template-columns: 100px repeat(7, 1fr); border-bottom: 1px solid var(--gray-200); background-color: var(--gray-100); }
+        .calendar-day { padding: 0.8rem 0.5rem; text-align: center; font-weight: 600; color: var(--gray-700); border-right: 1px solid var(--gray-200); font-size: 0.9rem; text-transform: uppercase; }
+        .calendar-day:first-child { background-color: var(--gray-200); color: var(--dark); }
+        .calendar-day:last-child { border-right: none; }
+        .calendar-grid { display: grid; grid-template-columns: 100px repeat(7, 1fr); }
+        .time-slot { padding: 0.8rem; border-right: 1px solid var(--gray-200); border-bottom: 1px solid var(--gray-200); min-height: 80px; position: relative; }
+        .time-slot:last-child { border-right: none; }
+        .time-slot:first-child { background-color: var(--gray-100); font-weight: 500; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; color: var(--gray-600); }
+        .calendar-grid:last-child .time-slot { border-bottom: none; }
+
+        .appointment {
+            background-color: var(--primary-light); border-left: 4px solid var(--primary); padding: 0.7rem 0.9rem; border-radius: 6px; font-size: 0.85rem; cursor: pointer; transition: all 0.3s ease; margin-bottom: 0.6rem; position: relative;
+        }
+        .appointment:hover { background-color: #d6e6f7; transform: scale(1.03); box-shadow: 0 3px 8px rgba(0,0,0,0.1); z-index: 10; }
+        .appointment h4 { margin: 0 0 0.2rem 0; font-size: 0.9rem; font-weight: 600; color: var(--primary-dark); }
+        .appointment p { margin: 0; font-size: 0.8rem; color: var(--gray-700); }
+
+        /* Upload Area - Revamped */
+         .pending-scan-item {
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            background-color: #fdfdff; /* Slightly off white */
+            transition: box-shadow 0.3s ease;
+         }
+         .pending-scan-item:hover {
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+         }
+         .pending-scan-item h5 {
+            color: var(--primary-dark);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--gray-200);
+            padding-bottom: 0.75rem;
+         }
+         .pending-scan-item p { color: var(--gray-700); font-size: 0.9rem; }
+         .pending-scan-item p i { color: var(--gray-500); margin-right: 8px; width: 16px; text-align: center; }
+
+        /* Quick Stats Card Enhancements */
+        .quick-stat-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: var(--white); /* Base background */
+        }
+        .quick-stat-card .card-body {
+            display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 160px; text-align: center; padding: 1.5rem; position: relative; z-index: 2;
+        }
+         /* Unique accent gradients/colors */
+        .quick-stat-card.stat-completed { border-left: 5px solid var(--success); }
+        .quick-stat-card.stat-pending { border-left: 5px solid var(--warning); }
+        .quick-stat-card.stat-appointments { border-left: 5px solid var(--primary); }
+        .quick-stat-card.stat-revenue { border-left: 5px solid var(--info); }
+
+        .quick-stat-card i.stat-icon {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            padding: 15px;
+            border-radius: 50%;
+            background-color: rgba(0,0,0,0.03); /* Subtle background for icon */
+        }
+        .quick-stat-card.stat-completed i.stat-icon { color: var(--success); background-color: #e8f5e9; }
+        .quick-stat-card.stat-pending i.stat-icon { color: var(--warning); background-color: #fff8e1;}
+        .quick-stat-card.stat-appointments i.stat-icon { color: var(--primary); background-color: var(--primary-light); }
+        .quick-stat-card.stat-revenue i.stat-icon { color: var(--info); background-color: #e1f5fe; }
+
+        .quick-stat-card h3 { font-size: 2.2rem; font-weight: 700; color: var(--dark); margin-bottom: 0.25rem; line-height: 1.1; }
+        .quick-stat-card p { color: var(--gray-600); margin-bottom: 0; font-weight: 500; }
+
+
+        /* Footer */
+        footer.site-footer {
+            background-color: var(--dark);
+            color: var(--gray-400);
+            padding: 3rem 0 1.5rem 0;
+            margin-top: 4rem;
+        }
+        footer.site-footer h5 { color: var(--white); font-weight: 600; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 1px; font-size: 1rem; }
+        footer.site-footer p, footer.site-footer address { color: var(--gray-500); font-size: 0.9rem; }
+        footer.site-footer a { color: var(--gray-400); text-decoration: none; transition: color 0.3s ease; }
+        footer.site-footer a:hover { color: var(--white); }
+        footer.site-footer .list-unstyled li { margin-bottom: 0.75rem; }
+        footer.site-footer .social-icons a {
+            display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background-color: rgba(255, 255, 255, 0.1); color: var(--white); transition: all 0.3s ease; margin-right: 10px;
+        }
+        footer.site-footer .social-icons a:hover { background-color: var(--primary); color: var(--white); transform: translateY(-2px); }
+        footer.site-footer hr { border-top: 1px solid var(--gray-700); margin: 2rem 0; }
+        footer.site-footer .copyright { font-size: 0.85rem; color: var(--gray-600); }
+
+        /* Responsive Adjustments */
+        @media (max-width: 991.98px) {
+            body { padding-top: 80px; }
+            .calendar-container { overflow-x: auto; }
+            .calendar-days, .calendar-grid { min-width: 950px; }
+            .doctor-header { padding: 2rem 1.5rem; text-align: center; }
+            .doctor-header h1 { font-size: 2rem; }
+            .doctor-header .btn-light { margin-top: 1rem; }
+        }
+        @media (max-width: 767.98px) {
+            .quick-stat-card { margin-bottom: 1.5rem; }
+            .card-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+            .card-header div { margin-top: 0.5rem; width: 100%; text-align: left; } /* Adjust button group spacing */
+             .table thead { display: none; } /* Consider card-based layout for table on small screens */
+             .table tbody tr { display: block; margin-bottom: 1rem; border: 1px solid var(--gray-200); border-radius: 8px; }
+             .table tbody td { display: block; text-align: right; padding-left: 50%; position: relative; border: none; border-bottom: 1px solid var(--gray-200); }
+             .table tbody td:last-child { border-bottom: none; }
+             .table tbody td::before { content: attr(data-label); position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 45%; padding-right: 10px; white-space: nowrap; text-align: left; font-weight: bold; color: var(--dark); }
+        }
+
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="/static/image/logo.png" alt="SHC Hospital Logo"> <!-- UPDATE PATH -->
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                 <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-home"></i> Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-briefcase-medical"></i> Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-user-md"></i> Doctors</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-star"></i> Testimonials</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="#"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-5 mb-5">
+
+        <!-- Doctor Header -->
+        <div class="doctor-header">
+            <div class="row align-items-center">
+                <div class="col-lg-8 mb-3 mb-lg-0">
+                    <h1><i class="fas fa-user-md me-3"></i> Dr. {{ doctor[5] }}</h1>
+                    <p><i class="far fa-hospital me-2 opacity-75"></i> Department: {{ doctor[7] }} <span class="mx-3">|</span> <i class="far fa-clock me-2 opacity-75"></i> Working Hours: {{ doctor[6] }} hours</p>
+                </div>
+                <div class="col-lg-4 text-lg-end">
+                    <a href="#appointments" class="btn btn-light shadow-sm"><i class="fas fa-calendar-check me-2"></i> View Completed</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Pending Scans Upload -->
+            <div class="col-lg-7 mb-4 mb-lg-0">
+                <div class="card">
+                    <div class="card-header">
+                        <span><i class="fas fa-x-ray"></i> Upload Pending Scan Results</span>
+                        <span class="badge bg-warning">{{ scans2|length }} Pending</span>
+                    </div>
+                    <div class="card-body">
+                        {% if scans2 %}
+                            <form method="POST" action="{{ url_for('views.doctor', doctor_id=doctor[0]) }}" enctype="multipart/form-data">
+                                <p class="text-muted mb-4 small">Complete the details for the following pending scans to finalize the reports.</p>
+                                {% for scan in scans2 %}
+                                    <div class="pending-scan-item">
+                                        <h5>Scan ID: #{{ scan[0] }}</h5>
+                                        <!-- Placeholder - Add real data from your 'scan' object -->
+                                        <p><i class="fas fa-user"></i>Patient: [Patient Name - e.g., scan[10]]</p>
+                                        <p><i class="fas fa-microscope"></i>Scan Type: [Scan Type - e.g., scan[4]]</p>
+                                        <p class="mb-3"><i class="far fa-calendar-alt"></i>Requested Date: [Date - e.g., scan[6]]</p>
+
+                                        <div class="row g-3 align-items-end">
+                                            <div class="col-md-5">
+                                                <label for="price_{{ scan[0] }}" class="form-label small fw-bold">Scan Price ($)</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                                    <input type="number" class="form-control form-control-sm" id="price_{{ scan[0] }}" name="price_{{ scan[0] }}" min="0" step="0.01" required placeholder="e.g., 150.00">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-7">
+                                                <label for="report_{{ scan[0] }}" class="form-label small fw-bold">Upload Report File</label>
+                                                <input class="form-control form-control-sm" type="file" id="report_{{ scan[0] }}" name="report_{{ scan[0] }}" required accept=".pdf,.jpg,.jpeg,.png,.dcm"> <!-- Added accept attribute -->
+                                                <input type="hidden" name="scan_id_{{ loop.index0 }}" value="{{ scan[0] }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                <input type="hidden" name="num_pending_scans" value="{{ scans2|length }}">
+                                <button type="submit" class="btn btn-primary w-100 mt-3 py-2"><i class="fas fa-upload me-2"></i> Submit All Pending Reports</button>
+                            </form>
+                        {% else %}
+                            <div class="text-center py-5">
+                                <img src="/static/image/all_done.svg" alt="All Done" style="width: 150px; margin-bottom: 1.5rem;"> <!-- Example SVG -->
+                                <h5 class="mb-2">All Caught Up!</h5>
+                                <p class="text-muted mb-0">There are no pending scans requiring reports.</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="col-lg-5">
+                <div class="row">
+                     <div class="col-md-6 col-6 mb-4">
+                        <div class="card quick-stat-card stat-completed">
+                            <div class="card-body">
+                                <i class="fas fa-check-circle stat-icon"></i>
+                                <h3>{{ scans|length }}</h3>
+                                <p>Completed Scans</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-6 mb-4">
+                        <div class="card quick-stat-card stat-pending">
+                            <div class="card-body">
+                                <i class="fas fa-hourglass-half stat-icon"></i>
+                                <h3>{{ scans2|length }}</h3>
+                                <p>Pending Scans</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="col-md-6 col-6 mb-4 mb-md-0">
+                        <div class="card quick-stat-card stat-appointments">
+                            <div class="card-body">
+                                <i class="fas fa-calendar-day stat-icon"></i>
+                                <h3>8</h3> <!-- Placeholder -->
+                                <p>Today's Appts</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-6 mb-4 mb-md-0">
+                         <div class="card quick-stat-card stat-revenue">
+                            <div class="card-body">
+                                <i class="fas fa-dollar-sign stat-icon"></i>
+                                <h3>$2.5k</h3><!-- Placeholder -->
+                                <p>Weekly Revenue</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Completed Radiology Appointments -->
+        <div id="appointments" class="card mt-4">
+            <div class="card-header">
+                <span><i class="fas fa-list-check"></i> Completed Radiology Appointments</span>
+                <div>
+                    <button class="btn btn-sm btn-outline-secondary me-2" title="Filter Appointments"><i class="fas fa-filter me-1"></i> Filter</button>
+                    <button class="btn btn-sm btn-outline-primary" title="Export Data"><i class="fas fa-download me-1"></i> Export</button>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0"> <!-- Removed table-striped for cleaner hover -->
+                        <thead>
+                            <tr>
+                                <th scope="col">Scan ID</th>
+                                <th scope="col">Date & Time</th>
+                                <th scope="col">Patient</th> <!-- Added Patient Column -->
+                                <th scope="col">Category</th>
+                                <th scope="col">Machine</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Status</th>
+                                <th scope="col" class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if scans %}
+                                {% for scan in scans %}
+                                <tr class="align-middle">
+                                    <td data-label="Scan ID"><span class="fw-bold">#{{ scan[0] }}</span></td>
+                                    <td data-label="Date & Time">{{ scan[6] }} <small class="text-muted d-block">{{ scan[9] }}</small></td>
+                                    <td data-label="Patient">[Patient Name for scan[8]]</td> <!-- Placeholder: Fetch patient name -->
+                                    <td data-label="Category"><span class="badge badge-scan">{{ scan[4] }}</span></td>
+                                    <td data-label="Machine"><span class="badge bg-primary">{{ scan[3] }}</span></td>
+                                    <td data-label="Price">${{ "%.2f"|format(scan[2]|float) }}</td>
+                                    <td data-label="Status"><span class="badge bg-success"><i class="fas fa-check me-1"></i> Completed</span></td>
+                                    <td data-label="Actions" class="text-center">
+                                        <a href="{{ url_for('views.scan_detail', scan_id=scan[0]) }}" class="btn btn-sm btn-outline-primary me-1 px-2 py-1" data-bs-toggle="tooltip" title="View Scan Details">
+                                            <i class="far fa-eye"></i>
+                                        </a>
+                                        <a href="{{ url_for('views.view_patient_info', patient_id=scan[8]) }}" class="btn btn-sm btn-outline-info px-2 py-1" data-bs-toggle="tooltip" title="View Patient Info">
+                                            <i class="fas fa-user"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="8" class="text-center text-muted py-5">
+                                        <i class="fas fa-folder-open fa-2x mb-3 d-block"></i>
+                                        No completed scans found matching the criteria.
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Weekly Schedule -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <span><i class="far fa-calendar-alt"></i> Weekly Schedule</span>
+                <div class="btn-group" role="group" aria-label="Calendar View">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Day</button>
+                    <button type="button" class="btn btn-sm btn-primary active">Week</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Month</button>
+                </div>
+            </div>
+             <!-- Calendar Container starts here -->
+            <div class="calendar-container">
+                <div class="calendar-header">
+                    <h3 id="calendar-title">May 12 - May 18, 2025</h3>
+                    <div class="calendar-nav">
+                        <button id="prev-week" title="Previous week"><i class="fas fa-chevron-left"></i></button>
+                        <button id="today-btn" title="Go to Current Week" class="mx-2">Today</button>
+                        <button id="next-week" title="Next week"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+                <div class="calendar-days">
+                    <div class="calendar-day">Time</div> <div class="calendar-day">Mon</div> <div class="calendar-day">Tue</div> <div class="calendar-day">Wed</div> <div class="calendar-day">Thu</div> <div class="calendar-day">Fri</div> <div class="calendar-day">Sat</div> <div class="calendar-day">Sun</div>
+                </div>
+
+                <!-- Static Calendar Grid Example - Keep your data structure -->
+                <div class="calendar-grid">
+                    <div class="time-slot">9:00 AM</div>
+                    <div class="time-slot"><div class="appointment" data-bs-toggle="modal" data-bs-target="#appointmentModal" data-scan-id="app1" data-patient-id="12345" data-scan-type="MRI Scan"><h4>MRI Scan</h4><p>Patient #12345</p></div></div>
+                    <div class="time-slot"></div><div class="time-slot"></div>
+                    <div class="time-slot"><div class="appointment" data-bs-toggle="modal" data-bs-target="#appointmentModal" data-scan-id="app2" data-patient-id="67890" data-scan-type="X-Ray"><h4>X-Ray</h4><p>Patient #67890</p></div></div>
+                    <div class="time-slot"><div class="appointment" data-bs-toggle="modal" data-bs-target="#appointmentModal" data-scan-id="app3" data-patient-id="54321" data-scan-type="CT Scan"><h4>CT Scan</h4><p>Patient #54321</p></div></div>
+                    <div class="time-slot"></div><div class="time-slot"></div>
+                </div>
+                <div class="calendar-grid">
+                    <div class="time-slot">10:00 AM</div>
+                    <div class="time-slot"><div class="appointment" data-bs-toggle="modal" data-bs-target="#appointmentModal" data-scan-id="app4" data-patient-id="98765" data-scan-type="Ultrasound"><h4>Ultrasound</h4> <p>Patient #98765</p></div></div>
+                    <div class="time-slot"><div class="appointment" data-bs-toggle="modal" data-bs-target="#appointmentModal" data-scan-id="app5" data-patient-id="24680" data-scan-type="X-Ray"><h4>X-Ray</h4> <p>Patient #24680</p></div></div>
+                    <div class="time-slot"></div><div class="time-slot"></div><div class="time-slot"></div>
+                    <div class="time-slot"><div class="appointment" data-bs-toggle="modal" data-bs-target="#appointmentModal" data-scan-id="app6" data-patient-id="13579" data-scan-type="MRI Scan"><h4>MRI Scan</h4> <p>Patient #13579</p></div></div>
+                    <div class="time-slot"></div>
+                </div>
+                <!-- Add more rows as in previous example -->
+                <div class="calendar-grid"> <div class="time-slot">11:00 AM</div><div class="time-slot"></div><div class="time-slot"></div><div class="time-slot"><div class="appointment" data-bs-toggle="modal" data-bs-target="#appointmentModal" data-scan-id="app7" data-patient-id="86420" data-scan-type="CT Scan"><h4>CT Scan</h4><p>Patient #86420</p></div></div><div class="time-slot"></div><div class="time-slot"><div class="appointment" data-bs-toggle="modal" data-bs-target="#appointmentModal" data-scan-id="app8" data-patient-id="97531" data-scan-type="X-Ray"><h4>X-Ray</h4><p>Patient #97531</p></div></div><div class="time-slot"></div><div class="time-slot"></div> </div>
+                <div class="calendar-grid"> <div class="time-slot">12:00 PM</div><div class="time-slot"></div><div class="time-slot"></div><div class="time-slot"></div><div class="time-slot"></div><div class="time-slot"></div><div class="time-slot"></div><div class="time-slot"></div> </div>
+                <div class="calendar-grid"> <div class="time-slot">1:00 PM</div><div class="time-slot"><div class="appointment" data-bs-toggle="modal" data-bs-target="#appointmentModal" data-scan-id="app9" data-patient-id="36925" data-scan-type="MRI Scan"><h4>MRI Scan</h4><p>Patient #36925</p></div></div><div class="time-slot"></div><div class="time-slot"><div class="appointment" data-bs-toggle="modal" data-bs-target="#appointmentModal" data-scan-id="app10" data-patient-id="14785" data-scan-type="Ultrasound"><h4>Ultrasound</h4><p>Patient #14785</p></div></div><div class="time-slot"><div class="appointment" data-bs-toggle="modal" data-bs-target="#appointmentModal" data-scan-id="app11" data-patient-id="25836" data-scan-type="X-Ray"><h4>X-Ray</h4><p>Patient #25836</p></div></div><div class="time-slot"></div><div class="time-slot"><div class="appointment" data-bs-toggle="modal" data-bs-target="#appointmentModal" data-scan-id="app12" data-patient-id="96325" data-scan-type="CT Scan"><h4>CT Scan</h4><p>Patient #96325</p></div></div><div class="time-slot"></div> </div>
+                <!-- Add remaining static rows -->
+                 <div class="calendar-grid"> <div class="time-slot">2:00 PM</div><div class="time-slot"></div><div class="time-slot"><div class="appointment" data-bs-toggle="modal" data-bs-target="#appointmentModal" data-scan-id="app13" data-patient-id="74125" data-scan-type="X-Ray"><h4>X-Ray</h4><p>Patient #74125</p></div></div><div class="time-slot"></div><div class="time-slot"></div><div class="time-slot"><div class="appointment" data-bs-toggle="modal" data-bs-target="#appointmentModal" data-scan-id="app14" data-patient-id="85214" data-scan-type="MRI Scan"><h4>MRI Scan</h4><p>Patient #85214</p></div></div><div class="time-slot"></div><div class="time-slot"></div> </div>
+                 <div class="calendar-grid"> <div class="time-slot">3:00 PM</div><div class="time-slot"><div class="appointment" data-bs-toggle="modal" data-bs-target="#appointmentModal" data-scan-id="app15" data-patient-id="96385" data-scan-type="CT Scan"><h4>CT Scan</h4><p>Patient #96385</p></div></div><div class="time-slot"></div><div class="time-slot"></div><div class="time-slot"><div class="appointment" data-bs-toggle="modal" data-bs-target="#appointmentModal" data-scan-id="app16" data-patient-id="75395" data-scan-type="Ultrasound"><h4>Ultrasound</h4><p>Patient #75395</p></div></div><div class="time-slot"></div><div class="time-slot"></div><div class="time-slot"></div> </div>
+                 <div class="calendar-grid"> <div class="time-slot">4:00 PM</div><div class="time-slot"></div><div class="time-slot"><div class="appointment" data-bs-toggle="modal" data-bs-target="#appointmentModal" data-scan-id="app17" data-patient-id="95175" data-scan-type="MRI Scan"><h4>MRI Scan</h4><p>Patient #95175</p></div></div><div class="time-slot"><div class="appointment" data-bs-toggle="modal" data-bs-target="#appointmentModal" data-scan-id="app18" data-patient-id="85296" data-scan-type="X-Ray"><h4>X-Ray</h4><p>Patient #85296</p></div></div><div class="time-slot"></div><div class="time-slot"></div><div class="time-slot"></div><div class="time-slot"></div> </div>
+                 <div class="calendar-grid"> <div class="time-slot">5:00 PM</div><div class="time-slot"><div class="appointment" data-bs-toggle="modal" data-bs-target="#appointmentModal" data-scan-id="app19" data-patient-id="75315" data-scan-type="Ultrasound"><h4>Ultrasound</h4><p>Patient #75315</p></div></div><div class="time-slot"></div><div class="time-slot"></div><div class="time-slot"></div><div class="time-slot"><div class="appointment" data-bs-toggle="modal" data-bs-target="#appointmentModal" data-scan-id="app20" data-patient-id="95174" data-scan-type="X-Ray"><h4>X-Ray</h4><p>Patient #95174</p></div></div><div class="time-slot"></div><div class="time-slot"></div> </div>
+
+            </div> <!-- End Calendar Container -->
+        </div>
+    </div> <!-- End Main Container -->
+
+    <!-- Appointment Detail Modal (Enhanced) -->
+    <div class="modal fade" id="appointmentModal" tabindex="-1" aria-labelledby="appointmentModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg"> <!-- Larger modal -->
+        <div class="modal-content shadow-lg border-0" style="border-radius: 12px;">
+          <div class="modal-header bg-primary text-white" style="border-radius: 12px 12px 0 0;">
+            <h5 class="modal-title" id="appointmentModalLabel"><i class="far fa-calendar-check me-2"></i> Appointment Details</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body p-4">
+            <!-- Dynamic content area -->
+            <div id="modal-appointment-details">
+                <p class="text-center text-muted my-5"><i class="fas fa-spinner fa-spin me-2"></i> Loading appointment details...</p>
+            </div>
+
+            <!-- Example static structure (will be replaced by JS) -->
+            <!--
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-2"><strong><i class="fas fa-hashtag me-2 text-muted"></i>Scan ID:</strong> <span id="modalScanId"></span></p>
+                    <p class="mb-2"><strong><i class="fas fa-microscope me-2 text-muted"></i>Scan Type:</strong> <span id="modalScanType"></span></p>
+                    <p class="mb-2"><strong><i class="far fa-calendar-alt me-2 text-muted"></i>Date:</strong> <span id="modalDate"></span></p>
+                    <p class="mb-2"><strong><i class="far fa-clock me-2 text-muted"></i>Time:</strong> <span id="modalTime"></span></p>
+                </div>
+                <div class="col-md-6">
+                     <p class="mb-2"><strong><i class="fas fa-user me-2 text-muted"></i>Patient ID:</strong> <span id="modalPatientId"></span></p>
+                     <p class="mb-2"><strong><i class="fas fa-user-injured me-2 text-muted"></i>Patient Name:</strong> <span id="modalPatientName">[Fetch Name]</span></p>
+                     <p class="mb-2"><strong><i class="fas fa-birthday-cake me-2 text-muted"></i>DOB:</strong> <span id="modalPatientDOB">[Fetch DOB]</span></p>
+                     <p class="mb-2"><strong><i class="fas fa-notes-medical me-2 text-muted"></i>Reason:</strong> <span id="modalReason">[Fetch Reason]</span></p>
+                </div>
+            </div>
+            <hr>
+            <h5><i class="fas fa-paperclip me-2 text-muted"></i> Attachments / Notes</h5>
+            <p class="text-muted small">No notes or attachments available for this appointment yet.</p>
+             -->
+          </div>
+          <div class="modal-footer bg-light" style="border-radius: 0 0 12px 12px;">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+            <a href="#" id="modalViewPatientBtn" class="btn btn-info text-white"><i class="fas fa-user me-1"></i> View Patient File</a>
+            <button type="button" class="btn btn-primary" id="modalActionBtn"><i class="fas fa-check me-1"></i> View Scan Results</button> <!-- Action changes based on context -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                    <h5>SHC Hospital</h5>
+                    <p>Dedicated to providing compassionate, high-quality healthcare through advanced technology and expert care.</p>
+                     <div class="social-icons mt-4">
+                        <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Services</a></li>
+                        <li><a href="#">Doctors</a></li>
+                        <li><a href="#">Appointments</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                 <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                    <h5>Departments</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#">Cardiology</a></li>
+                        <li><a href="#">Neurology</a></li>
+                        <li><a href="#">Radiology</a></li>
+                        <li><a href="#">Pediatrics</a></li>
+                        <li><a href="#">Emergency</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                    <h5>Contact Us</h5>
+                    <address>
+                        123 Hospital Street<br>
+                        Health City, HC 54321<br>
+                        <i class="fas fa-phone me-2 mt-2"></i> (123) 456-7890<br>
+                        <i class="fas fa-envelope me-2"></i> info@shchospital.com
+                    </address>
+                </div>
+            </div>
+            <hr>
+            <div class="text-center copyright">
+                 © {{ current_year | default('2025') }} SHC Hospital. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // Initialize Bootstrap Tooltips
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+              return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+
+
+            // --- Calendar Navigation (Example - Needs proper date logic) ---
+            const prevBtn = document.getElementById('prev-week');
+            const nextBtn = document.getElementById('next-week');
+            const todayBtn = document.getElementById('today-btn');
+            const calendarTitle = document.getElementById('calendar-title');
+            let currentWeekStart = new Date(2025, 4, 12); // May 12, 2025
+
+            function updateCalendarTitle() {
+                const weekEnd = new Date(currentWeekStart);
+                weekEnd.setDate(currentWeekStart.getDate() + 6);
+                const options = { month: 'long', day: 'numeric', year: 'numeric' };
+                calendarTitle.textContent = `${currentWeekStart.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })} - ${weekEnd.toLocaleDateString('en-US', options)}`;
+                // TODO: Add AJAX call here to fetch and render appointments for the new week
+                console.log("Fetching data for week starting:", currentWeekStart.toDateString());
+            }
+
+            if (prevBtn) prevBtn.addEventListener('click', () => { currentWeekStart.setDate(currentWeekStart.getDate() - 7); updateCalendarTitle(); });
+            if (nextBtn) nextBtn.addEventListener('click', () => { currentWeekStart.setDate(currentWeekStart.getDate() + 7); updateCalendarTitle(); });
+            if (todayBtn) todayBtn.addEventListener('click', () => { /* Logic to set currentWeekStart to actual current week */ currentWeekStart = new Date(2025, 4, 12); updateCalendarTitle(); });
+            updateCalendarTitle(); // Initial call
+
+             // --- Appointment Modal Logic ---
+            var appointmentModal = document.getElementById('appointmentModal');
+            var modalDetailsContainer = document.getElementById('modal-appointment-details');
+            var modalViewPatientBtn = document.getElementById('modalViewPatientBtn');
+             var modalActionBtn = document.getElementById('modalActionBtn');
+
+
+            if (appointmentModal) {
+                appointmentModal.addEventListener('show.bs.modal', function (event) {
+                    var button = event.relatedTarget;
+                    var scanId = button.getAttribute('data-scan-id'); // Use a unique ID if possible
+                    var patientId = button.getAttribute('data-patient-id');
+                    var scanType = button.getAttribute('data-scan-type');
+
+                    // Reset modal content
+                    modalDetailsContainer.innerHTML = '<p class="text-center text-muted my-5"><i class="fas fa-spinner fa-spin me-2"></i> Loading appointment details...</p>';
+                     modalViewPatientBtn.href = '#'; // Reset link
+                     modalActionBtn.textContent = 'Loading...';
+                     modalActionBtn.href = '#'; // Reset link
+
+                    console.log(`Modal shown for Scan ID: ${scanId}, Patient ID: ${patientId}`);
+
+                    // ** SIMULATE AJAX CALL **
+                    // In a real app, fetch full details using scanId or patientId
+                    setTimeout(() => {
+                        // Replace this with data fetched from your server
+                        const fetchedData = {
+                            scanId: scanId || 'N/A',
+                            scanType: scanType || 'N/A',
+                            date: 'May 15, 2025', // Example
+                            time: '9:00 AM', // Example
+                            patientId: patientId || 'N/A',
+                            patientName: 'John Doe', // Example - Fetch Real Name
+                            patientDOB: 'Jan 01, 1980', // Example
+                            reason: 'Routine checkup', // Example
+                            status: 'Scheduled', // Could be 'Completed', 'Pending Report' etc.
+                            scanResultUrl: `/scan/${scanId}/results`, // Example URL
+                            patientProfileUrl: `/patient/${patientId}` // Example URL
+                        };
+
+                         modalDetailsContainer.innerHTML = `
+                            <div class="row">
+                                <div class="col-md-6 mb-3 mb-md-0">
+                                    <h6 class="text-primary mb-3">Appointment Info</h6>
+                                    <p class="mb-2"><strong><i class="fas fa-hashtag me-2 text-muted"></i>Scan ID:</strong> ${fetchedData.scanId}</p>
+                                    <p class="mb-2"><strong><i class="fas fa-microscope me-2 text-muted"></i>Scan Type:</strong> ${fetchedData.scanType}</p>
+                                    <p class="mb-2"><strong><i class="far fa-calendar-alt me-2 text-muted"></i>Date:</strong> ${fetchedData.date}</p>
+                                    <p class="mb-2"><strong><i class="far fa-clock me-2 text-muted"></i>Time:</strong> ${fetchedData.time}</p>
+                                     <p class="mb-2"><strong><i class="fas fa-info-circle me-2 text-muted"></i>Status:</strong> <span class="badge bg-info">${fetchedData.status}</span></p>
+                                </div>
+                                <div class="col-md-6">
+                                     <h6 class="text-primary mb-3">Patient Info</h6>
+                                     <p class="mb-2"><strong><i class="fas fa-id-card me-2 text-muted"></i>Patient ID:</strong> ${fetchedData.patientId}</p>
+                                     <p class="mb-2"><strong><i class="fas fa-user-injured me-2 text-muted"></i>Name:</strong> ${fetchedData.patientName}</p>
+                                     <p class="mb-2"><strong><i class="fas fa-birthday-cake me-2 text-muted"></i>DOB:</strong> ${fetchedData.patientDOB}</p>
+                                     <p class="mb-2"><strong><i class="fas fa-notes-medical me-2 text-muted"></i>Reason:</strong> ${fetchedData.reason || 'N/A'}</p>
+                                </div>
+                            </div>
+                            <hr class="my-4">
+                            <h5><i class="fas fa-paperclip me-2 text-muted"></i> Attachments / Notes</h5>
+                            <p class="text-muted small">No additional notes or attachments found.</p>
+                         `;
+
+                         // Update buttons
+                         modalViewPatientBtn.href = fetchedData.patientProfileUrl;
+                         modalActionBtn.textContent = 'View Scan Results'; // Or other relevant action
+                         modalActionBtn.onclick = () => { window.location.href = fetchedData.scanResultUrl; }; // Example action
+
+
+                    }, 800); // Simulate network delay
+
+                });
+            }
+
+            // --- Responsive Table Labels ---
+            function setupResponsiveTableLabels() {
+                const tables = document.querySelectorAll('.table-responsive table');
+                tables.forEach(table => {
+                    const headers = Array.from(table.querySelectorAll('thead th')).map(th => th.textContent);
+                    const rows = table.querySelectorAll('tbody tr');
+                    rows.forEach(row => {
+                        const cells = row.querySelectorAll('td');
+                        cells.forEach((cell, index) => {
+                            if (headers[index]) {
+                                cell.setAttribute('data-label', headers[index]);
+                            }
+                        });
+                    });
+                });
+            }
+             setupResponsiveTableLabels(); // Run on load
+             // Re-run if table content is loaded dynamically
+
+        });
+    </script>
+</body>
+</html>
