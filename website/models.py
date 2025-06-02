@@ -281,14 +281,34 @@ def book_surgery(surgery_type, doctor_name, date, hour_minute, additional_notes,
         else:
             message = f'Dr is only available between {start_work} and {end_work}'
             return message
-
+from bson.objectid import ObjectId
+from pymongo.errors import PyMongoError
 def get_doctor_by_id(doctor_id):
-    # Convert doctor_id to ObjectId if it's a string
-    if isinstance(doctor_id, str):
-        doctor_id = ObjectId(doctor_id)
-        
-    return doctors_collection.find_one({'_id': doctor_id})
+    print(f"Input doctor_id: {doctor_id} (type: {type(doctor_id)})")
+    try:
+        if isinstance(doctor_id, str):
+            try:
+                doctor_id = ObjectId(doctor_id)
+                print(f"Converted to ObjectId: {doctor_id}")
+            except Exception as e:
+                print(f"Invalid ObjectId string: {doctor_id}, error: {e}")
+                return None
+        elif not isinstance(doctor_id, ObjectId):
+            print(f"Unsupported doctor_id type: {type(doctor_id)}")
+            return None
 
+        doctor = doctors_collection.find_one({'_id': doctor_id})
+        if doctor:
+            print(f"Doctor found: {doctor['full_name']} (ID: {doctor['_id']})")
+        else:
+            print(f"No doctor found for ID: {doctor_id}")
+        return doctor
+    except PyMongoError as e:
+        print(f"Database error: {e}")
+        return None
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+        return None
 def get_patient_by_id(patient_id):
     # Convert patient_id to ObjectId if it's a string
     if isinstance(patient_id, str):

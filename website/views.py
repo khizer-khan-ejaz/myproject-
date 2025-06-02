@@ -406,6 +406,7 @@ from bson.errors import InvalidId
 def edit_doctor(doctor_id):
     try:
         print(f"Attempting to edit doctor with ID: {doctor_id}")
+        
         doctor_id_obj = ObjectId(doctor_id)
         doctor = get_doctor_by_id(doctor_id_obj) # Use your model function
 
@@ -470,7 +471,7 @@ def edit_doctor(doctor_id):
                 traceback.print_exc()
                 # Re-render edit form with error message? Or redirect to admin?
                 # return render_template('edit_doctor.html', doctor=doctor, error=str(e)) # Example re-render
-
+        doctors = list(doctors_collection.find())
         # GET Request
         print(f"Rendering template with doctor data: {doctor}")
         return render_template('edit_doctor.html', doctor=doctor)

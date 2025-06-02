@@ -46,8 +46,8 @@ app = Flask(__name__)
 CORS(app) # Enable CORS for all routes
 
 # --- Groq Chatbot Setup ---
-GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "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") # Replace with your key or env var
-if GROQ_API_KEY == "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" and "GROQ_API_KEY" not in os.environ:
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "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") # Replace with your key or env var
+if GROQ_API_KEY == "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" and "GROQ_API_KEY" not in os.environ:
     print("WARNING: Using a hardcoded Groq API key. For production, set the GROQ_API_KEY environment variable.")
 elif not GROQ_API_KEY:
     print("ERROR: GROQ_API_KEY not set. Please set it as an environment variable. Groq features will fail.")
@@ -294,6 +294,7 @@ def initialize_chat_session():
         "collected_symptoms": [],
         "primary_disease_guess": None,
     }
+    
     initial_bot_message = "Hello! I'm an AI Medical Information Assistant. Do you want to discuss symptoms for a potential disease, or ask about appointments? Remember, I am an AI assistant and not a real doctor. This information is for general knowledge only and not a substitute for professional medical advice. Please consult a qualified healthcare professional for any health concerns or before making any decisions related to your health."
     conversation_history.append({"role": "assistant", "content": initial_bot_message})
     print("Chat session initialized.")
